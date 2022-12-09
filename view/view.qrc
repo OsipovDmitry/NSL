@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/add.png</file>
+        <file>res/change.png</file>
+        <file>res/remove.png</file>
+        <file>res/like.png</file>
+        <file>res/wait.gif</file>
+        <file>res/recalculate.png</file>
+        <file>res/richtextedit/editcopy.png</file>
+        <file>res/richtextedit/editcut.png</file>
+        <file>res/richtextedit/editpaste.png</file>
+        <file>res/richtextedit/editredo.png</file>
+        <file>res/richtextedit/editundo.png</file>
+        <file>res/richtextedit/textbold.png</file>
+        <file>res/richtextedit/textcenter.png</file>
+        <file>res/richtextedit/textitalic.png</file>
+        <file>res/richtextedit/textjustify.png</file>
+        <file>res/richtextedit/textleft.png</file>
+        <file>res/richtextedit/textright.png</file>
+        <file>res/richtextedit/textunder.png</file>
+    </qresource>
+</RCC>

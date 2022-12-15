@@ -28,6 +28,7 @@ SOURCES += \
     controller/src/nslproviderbase.cpp \
     controller/src/nslprovider_1_0.cpp \
     controller/src/nslcontroller.cpp \
+    controller/src/settings.cpp \
     # view
     view/src/richtextedit.cpp \
     view/src/recipeitemdialog.cpp \
@@ -38,7 +39,6 @@ SOURCES += \
     view/src/ingredientdialog.cpp \
     view/src/waitbox.cpp \
     view/src/newproductdialog.cpp \
-    view/src/settings.cpp \
     view/src/recalcrecipedalog.cpp \
     view/src/textbrowser.cpp \
     view/src/nslwidget.cpp
@@ -68,6 +68,7 @@ HEADERS += \
     controller/nslcontroller.h \
     controller/inslprovider.h \
     controller/forwarddecl.h \
+    controller/settings.h \
     controller/src/nslproviderbase.h \
     controller/src/nslprovider_1_0.h \
     # view
@@ -80,7 +81,6 @@ HEADERS += \
     view/src/ingredientdialog.h \
     view/src/waitbox.h \
     view/src/newproductdialog.h \
-    view/src/settings.h \
     view/src/recalcrecipedalog.h \
     view/src/textbrowser.h \
     view/nslwidget.h
@@ -92,3 +92,6 @@ export(first.depends)
 export(settings.commands)
 export(samplecases.commands)
 QMAKE_EXTRA_TARGETS += first settings samplecases
+
+DISTFILES += \
+    settings.json

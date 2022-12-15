@@ -97,14 +97,14 @@ void NSLWidget::onFileNew()
 
 void NSLWidget::onFileOpen()
 {
-    onFileClose();
-
     auto fileName = QFileDialog::getOpenFileName(this,
                                                  tr("Open NoSugarLife Product"),
                                                  QDir::currentPath(),
                                                  tr("NoSugarLife Products (*.nsl)"));
     if (fileName.isEmpty())
         return;
+
+    onFileClose();
 
     QTimer::singleShot(0, [this, fileName]() {
         controller::NSLController::instance().onOpenFile(fileName.toStdString());
@@ -131,9 +131,13 @@ void NSLWidget::onFileSave()
 
 void NSLWidget::onFileSaveAs()
 {
+    auto& ctrl = controller::NSLController::instance();
+
     auto productFileName = QFileDialog::getSaveFileName(this,
                                                  tr("Save NoSugarLife Product"),
-                                                 QDir::currentPath(),
+                                                 ctrl.productFilename().empty() ?
+                                                            QDir::currentPath() :
+                                                            QFileInfo(QString::fromStdString(ctrl.productFilename())).absoluteDir().dirName(),
                                                  tr("NoSugarLife Products (*.nsl)"));
     if (productFileName.isEmpty())
         return;
@@ -141,8 +145,8 @@ void NSLWidget::onFileSaveAs()
     if (!productFileName.endsWith(".nsl"))
         productFileName.append(".nsl");
 
-    QTimer::singleShot(0, [this, productFileName]() {
-        controller::NSLController::instance().onSaveFile(productFileName.toStdString());
+    QTimer::singleShot(0, [this, &ctrl, productFileName]() {
+        ctrl.onSaveFile(productFileName.toStdString());
         closeWaitBox();
     });
     showWaitBox();

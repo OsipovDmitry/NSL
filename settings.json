@@ -1,2 +1,7 @@
 {
+    "ExperimentSettings":
+    {
+        "ShowColor": false,
+        "ShowMark": false
+    }
 }

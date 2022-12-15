@@ -1,4 +1,5 @@
 #include <controller/nslcontroller.h>
+#include <controller/settings.h>
 
 #include "nslprovider_1_0.h"
 
@@ -14,6 +15,12 @@ NSLController& NSLController::instance()
 void NSLController::registerNSLProvider(std::shared_ptr<INSLProvider> provider)
 {
     auto version = provider->version();
+
+    if (version == NSLProviderVersion(0,0))
+    {
+        emit critical(L"Provider's version [0, 0] can't be registered.");
+        return;
+    }
 
     if (m_providers.count(version))
     {
@@ -94,13 +101,26 @@ void NSLController::onSaveFile(const std::string& filename)
         return;
     }
 
+    auto saveVersion = Settings::instance().saveProviderVersion();
+    if ((saveVersion != NSLProviderVersion(0,0)) && (!m_providers.count(saveVersion)))
+    {
+        emit warning(L"Provider [" +
+                   std::to_wstring(saveVersion.first) +
+                   L"," + std::to_wstring(saveVersion.second) +
+                   L"] is not registered.\nLast version will be used.");
+        saveVersion = {0, 0};
+    }
+
+    auto provider = (saveVersion == NSLProviderVersion(0, 0)) ? m_providers.rbegin()->second : m_providers.at(saveVersion);
+
     std::wstring errorMessage;
-    if (!m_providers.rbegin()->second->save(filename, m_product, errorMessage))
+    if (!provider->save(filename, m_product, errorMessage))
     {
         emit error(errorMessage);
         return;
     }
 
+    m_productFilename = filename;
     m_unsavedChanges = false;
     emit fileChanged();
 }

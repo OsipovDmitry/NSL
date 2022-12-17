@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 
 #include <model/types.h>
+#include <controller/settings.h>
 
 #include "experimentitemwidget.h"
 
@@ -18,7 +19,8 @@ ExperimentItemWidget::ExperimentItemWidget(const model::Experiment& experiment, 
 
     auto label1 = new QLabel;
     label1->setPixmap(colorPixmap);
-    layout->addWidget(label1);
+    if (controller::Settings::instance().experimentShowColor())
+        layout->addWidget(label1);
 
     auto label2 = new QLabel(QString::fromStdWString(experiment.name));
     layout->addWidget(label2);
@@ -32,7 +34,8 @@ ExperimentItemWidget::ExperimentItemWidget(const model::Experiment& experiment, 
 
         auto label3 = new QLabel;
         label3->setPixmap(likePixmap);
-        layout->addWidget(label3);
+        if (controller::Settings::instance().experimentShowMark())
+            layout->addWidget(label3);
     }
 
     layout->addStretch();

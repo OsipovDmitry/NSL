@@ -79,6 +79,11 @@
            <string>Carb, g / 100g</string>
           </property>
          </column>
+         <column>
+          <property name="text">
+           <string>Kcal / 100g</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
@@ -114,7 +119,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../business.qrc">
+            <iconset resource="../view.qrc">
              <normaloff>:/res/change.png</normaloff>:/res/change.png</iconset>
            </property>
           </widget>
@@ -137,7 +142,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../business.qrc">
+            <iconset resource="../view.qrc">
              <normaloff>:/res/remove.png</normaloff>:/res/remove.png</iconset>
            </property>
           </widget>
@@ -160,7 +165,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../business.qrc">
+            <iconset resource="../view.qrc">
              <normaloff>:/res/add.png</normaloff>:/res/add.png</iconset>
            </property>
           </widget>
@@ -259,7 +264,7 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="../business.qrc">
+               <iconset resource="../view.qrc">
                 <normaloff>:/res/change.png</normaloff>:/res/change.png</iconset>
               </property>
              </widget>
@@ -282,7 +287,7 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="../business.qrc">
+               <iconset resource="../view.qrc">
                 <normaloff>:/res/remove.png</normaloff>:/res/remove.png</iconset>
               </property>
              </widget>
@@ -305,7 +310,7 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="../business.qrc">
+               <iconset resource="../view.qrc">
                 <normaloff>:/res/add.png</normaloff>:/res/add.png</iconset>
               </property>
              </widget>
@@ -378,7 +383,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="markLabel">
                <property name="text">
                 <string>Mark</string>
                </property>
@@ -454,6 +459,11 @@
                   <string>Carb, g</string>
                  </property>
                 </column>
+                <column>
+                 <property name="text">
+                  <string>Kcal</string>
+                 </property>
+                </column>
                </widget>
               </item>
               <item>
@@ -489,7 +499,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../business.qrc">
+                   <iconset resource="../view.qrc">
                     <normaloff>:/res/recalculate.png</normaloff>:/res/recalculate.png</iconset>
                   </property>
                  </widget>
@@ -512,7 +522,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../business.qrc">
+                   <iconset resource="../view.qrc">
                     <normaloff>:/res/change.png</normaloff>:/res/change.png</iconset>
                   </property>
                  </widget>
@@ -535,7 +545,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../business.qrc">
+                   <iconset resource="../view.qrc">
                     <normaloff>:/res/remove.png</normaloff>:/res/remove.png</iconset>
                   </property>
                  </widget>
@@ -558,7 +568,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../business.qrc">
+                   <iconset resource="../view.qrc">
                     <normaloff>:/res/add.png</normaloff>:/res/add.png</iconset>
                   </property>
                  </widget>
@@ -625,7 +635,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../business.qrc">
+                   <iconset resource="../view.qrc">
                     <normaloff>:/res/change.png</normaloff>:/res/change.png</iconset>
                   </property>
                  </widget>
@@ -653,7 +663,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../business.qrc"/>
+  <include location="../view.qrc"/>
  </resources>
  <connections/>
 </ui>

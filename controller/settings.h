@@ -23,14 +23,26 @@ public:
     bool experimentShowMark();
     void setExperimentShowMark(bool);
 
+    bool showKcalInIngredients();
+    void setShowKcalInIngredients(bool);
+
+    bool showKcalInExperiments();
+    void setShowKcalInExperiments(bool);
+
 private:
     Settings();
+
+    bool readBool(const std::string&, bool);
+    void writeBool(const std::string&, bool);
+
     void rewriteSettingsFile();
 
     static const std::string s_settingsFilename;
     static const std::string s_saveProviderVersionPath;
-    static const std::string s_experimentshowColorPath;
-    static const std::string s_experimentshowMarkPath;
+    static const std::string s_experimentShowColorPath;
+    static const std::string s_experimentShowMarkPath;
+    static const std::string s_showKcalInIngredients;
+    static const std::string s_showKcalInExperiments;
 
     std::unique_ptr<SettingsPrivate> m_;
 };

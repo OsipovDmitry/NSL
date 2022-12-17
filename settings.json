@@ -1,4 +1,12 @@
 {
+    "SaveProviderVersion": [0, 0],
+
+    "ShowKcal":
+    {
+        "InIngredients": true,
+        "InExperiments": false
+    },
+
     "ExperimentSettings":
     {
         "ShowColor": false,

@@ -27,6 +27,8 @@ public:
     double carb() const;
 
 private:
+    void recalculateKcal(double);
+
     std::shared_ptr<Ui::IngredientDialog> m_ui;
 };
 

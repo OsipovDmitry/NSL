@@ -1,5 +1,7 @@
 #include <QColorDialog>
 
+#include <controller/settings.h>
+
 #include "experimentdialog.h"
 #include "ui_experimentdialog.h"
 
@@ -11,10 +13,13 @@ ExperimentDialog::ExperimentDialog(const QColor &color, const QString& name, QWi
     m_ui(std::make_shared<Ui::ExperimentDialog>())
 {
     m_ui->setupUi(this);
+    connect(m_ui->colorButton, &QPushButton::clicked, this, &ExperimentDialog::onColorButtonClicked);
+
+    m_ui->label->setVisible(controller::Settings::instance().experimentShowColor());
+    m_ui->colorButton->setVisible(controller::Settings::instance().experimentShowColor());
+
     setColor(color);
     setName(name);
-
-    connect(m_ui->colorButton, &QPushButton::clicked, this, &ExperimentDialog::onColorButtonClicked);
 }
 
 QColor ExperimentDialog::color() const

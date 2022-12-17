@@ -63,6 +63,7 @@ HEADERS += \
     # model
     model/types.h \
     model/color.h \
+    model/kcal.h \
     model/forwarddecl.h \
     # controller
     controller/nslcontroller.h \

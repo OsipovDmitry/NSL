@@ -11,8 +11,10 @@ namespace controller
 
 const std::string Settings::s_settingsFilename = "settings.json";
 const std::string Settings::s_saveProviderVersionPath = "SaveProviderVersion";
-const std::string Settings::s_experimentshowColorPath = "ExperimentSettings.ShowColor";
-const std::string Settings::s_experimentshowMarkPath = "ExperimentSettings.ShowMark";
+const std::string Settings::s_experimentShowColorPath = "ExperimentSettings.ShowColor";
+const std::string Settings::s_experimentShowMarkPath = "ExperimentSettings.ShowMark";
+const std::string Settings::s_showKcalInIngredients = "ShowKcal.InIngredients";
+const std::string Settings::s_showKcalInExperiments = "ShowKcal.InExperiments";
 
 struct SettingsPrivate
 {
@@ -175,38 +177,42 @@ void Settings::setSaveProviderVersion(const controller::NSLProviderVersion& vers
 
 bool Settings::experimentShowColor()
 {
-    bool result = true;
-
-    if (auto doc = m_->getDocument(s_experimentshowColorPath))
-        result = doc->GetBool();
-
-    return result;
+    return readBool(s_experimentShowColorPath, true);
 }
 
 void Settings::setExperimentShowColor(bool value)
 {
-    if (auto doc = m_->getOrCreateDocument(s_experimentshowColorPath))
-        doc->SetBool(value);
-
-    rewriteSettingsFile();
+    writeBool(s_experimentShowColorPath, value);
 }
 
 bool Settings::experimentShowMark()
 {
-    bool result = true;
-
-    if (auto doc = m_->getDocument(s_experimentshowMarkPath))
-        result = doc->GetBool();
-
-    return result;
+    return readBool(s_experimentShowMarkPath, true);
 }
 
 void Settings::setExperimentShowMark(bool value)
 {
-    if (auto doc = m_->getOrCreateDocument(s_experimentshowMarkPath))
-        doc->SetBool(value);
+    writeBool(s_experimentShowMarkPath, value);
+}
 
-    rewriteSettingsFile();
+bool Settings::showKcalInIngredients()
+{
+    return readBool(s_showKcalInIngredients, true);
+}
+
+void Settings::setShowKcalInIngredients(bool value)
+{
+    writeBool(s_showKcalInIngredients, value);
+}
+
+bool Settings::showKcalInExperiments()
+{
+    return readBool(s_showKcalInExperiments, true);
+}
+
+void Settings::setShowKcalInExperiments(bool value)
+{
+    writeBool(s_showKcalInExperiments, value);
 }
 
 Settings::Settings()
@@ -222,6 +228,24 @@ Settings::Settings()
     auto byteArray = file.readAll();
     file.close();
     m_->document.Parse(byteArray);
+}
+
+bool Settings::readBool(const std::string& path, bool defaultValue)
+{
+    bool result = defaultValue;
+
+    if (auto doc = m_->getDocument(path))
+        result = doc->GetBool();
+
+    return result;
+}
+
+void Settings::writeBool(const std::string& path, bool value)
+{
+    if (auto doc = m_->getOrCreateDocument(path))
+        doc->SetBool(value);
+
+    rewriteSettingsFile();
 }
 
 void Settings::rewriteSettingsFile()

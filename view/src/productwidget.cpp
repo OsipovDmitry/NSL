@@ -2,7 +2,9 @@
 #include <QTimer>
 
 #include <model/types.h>
+#include <model/kcal.h>
 #include <controller/nslcontroller.h>
+#include <controller/settings.h>
 
 #include "productwidget.h"
 #include "waitbox.h"
@@ -457,6 +459,7 @@ void ProductWidget::updateUi()
             m_ui->ingredientsTable->setItem(i, 1, new QTableWidgetItem(QString::number(ingredient.protein)));
             m_ui->ingredientsTable->setItem(i, 2, new QTableWidgetItem(QString::number(ingredient.fat)));
             m_ui->ingredientsTable->setItem(i, 3, new QTableWidgetItem(QString::number(ingredient.carb)));
+            m_ui->ingredientsTable->setItem(i, 4, new QTableWidgetItem(QString::number(model::calculateKcal(ingredient.protein, ingredient.fat, ingredient.carb))));
         }
 
         m_ui->ingredientsTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
@@ -513,6 +516,11 @@ void ProductWidget::updateExperimentAreaUi()
         m_ui->recipeIngredientsTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdWString(ingredient.name)));
         m_ui->recipeIngredientsTable->setItem(i, 1, new QTableWidgetItem(QString::number(ingredientIndexWeight.second)));
 
+        int persentage = (totalWeight > 0.) ?
+                    static_cast<int>(ingredientIndexWeight.second / totalWeight * 100. + .5) :
+                    0;
+        m_ui->recipeIngredientsTable->setItem(i, 2, new QTableWidgetItem(QString::number(persentage) + "%"));
+
         double protein = ingredient.protein / 100. * ingredientIndexWeight.second;
         totalProtein += protein;
         m_ui->recipeIngredientsTable->setItem(i, 3, new QTableWidgetItem(QString::number(protein)));
@@ -525,19 +533,18 @@ void ProductWidget::updateExperimentAreaUi()
         totalCarb += carb;
         m_ui->recipeIngredientsTable->setItem(i, 5, new QTableWidgetItem(QString::number(carb)));
 
-        int persentage = (totalWeight > 0.) ?
-                    persentage = static_cast<int>(ingredientIndexWeight.second / totalWeight * 100. + .5) :
-                    0;
-        m_ui->recipeIngredientsTable->setItem(i, 2, new QTableWidgetItem(QString::number(persentage) + "%"));
+        double kcal = model::calculateKcal(protein, fat, carb);
+        m_ui->recipeIngredientsTable->setItem(i, 6, new QTableWidgetItem(QString::number(kcal)));
     }
 
-    std::array<QString, 6> totalItemNames {
+    std::array<QString, 7> totalItemNames {
         "Total",
         QString::number(totalWeight),
         "100%",
         QString::number(totalProtein),
         QString::number(totalFat),
-        QString::number(totalCarb)
+        QString::number(totalCarb),
+        QString::number(model::calculateKcal(totalProtein, totalFat, totalCarb))
     };
 
     QFont totalItemFont;
@@ -554,13 +561,18 @@ void ProductWidget::updateExperimentAreaUi()
 
     if (totalWeight > 0. && std::abs(totalWeight - 100.) > 1e-2)
     {
+        const double protein100g = totalProtein / totalWeight * 100.;
+        const double fat100g = totalFat / totalWeight * 100.;
+        const double carb100g = totalCarb / totalWeight * 100.;
+
         totalItemNames = {
             "Total / 100g",
             "100",
             "100%",
-            QString::number(totalProtein / totalWeight * 100.),
-            QString::number(totalFat / totalWeight * 100.),
-            QString::number(totalCarb / totalWeight * 100.)
+            QString::number(protein100g),
+            QString::number(fat100g),
+            QString::number(carb100g),
+            QString::number(model::calculateKcal(protein100g, fat100g, carb100g)),
         };
 
         m_ui->recipeIngredientsTable->insertRow(experiment.recipe.size() + 1);
@@ -804,6 +816,14 @@ void ProductWidget::setupWidgets()
 
     m_productTabCurrentIndex = ingredientsTabIndex();
     m_ui->productTabWidget->setCurrentIndex(m_productTabCurrentIndex);
+
+    m_ui->experimentColor->setVisible(controller::Settings::instance().experimentShowColor());
+
+    m_ui->markLabel->setVisible(controller::Settings::instance().experimentShowMark());
+    m_ui->markBox->setVisible(controller::Settings::instance().experimentShowMark());
+
+    m_ui->ingredientsTable->horizontalHeader()->setSectionHidden(4, !controller::Settings::instance().showKcalInIngredients());
+    m_ui->recipeIngredientsTable->horizontalHeader()->setSectionHidden(6, !controller::Settings::instance().showKcalInExperiments());
 }
 
 std::shared_ptr<ProductWidget::CachedWidgetsStates> ProductWidget::saveWidgetsStates() const
